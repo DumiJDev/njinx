@@ -2,8 +2,8 @@
 
 ```yaml
 Version: 0.1.0  
-GroupId: `io.github.dumijdev`  
-ArtifactId: `njinx`  
+GroupId: io.github.dumijdev  
+ArtifactId: njinx  
 Java Version: 11 (because we like keeping things modern)  
 License: MIT (open source, baby!)
 ```

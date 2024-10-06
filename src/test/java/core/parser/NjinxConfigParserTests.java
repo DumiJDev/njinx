@@ -180,7 +180,6 @@ class NjinxConfigParserTests {
     void shouldWriteNginxDotConfToFileFromNjinxConfigObject() throws IOException {
         var nginxConfLocationOut = "/nginx/conf/nginx_generated.conf";
 
-
         var njinxConfig = new NjinxConfig();
 
 
