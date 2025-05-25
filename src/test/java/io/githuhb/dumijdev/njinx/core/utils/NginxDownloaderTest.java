@@ -13,6 +13,7 @@ class NginxDownloaderTest {
 
   @Test
   void testDownloadNginx() throws DownloadFailedException, IOException, ArchiveException {
+    DirectoryCleanup.cleanup(new File("/etc/apps").getAbsolutePath());
     NginxDownloader.download(NginxVersions.NGINX_1_28_0, new File("/etc/apps"));
 
     Assertions.assertTrue(new File("/etc/apps/nginx-1.28.0").exists());

@@ -1,11 +1,16 @@
 package core.parser;
 
+import io.githuhb.dumijdev.njinx.core.constants.NginxVersions;
+import io.githuhb.dumijdev.njinx.core.exceptions.DownloadFailedException;
 import io.githuhb.dumijdev.njinx.core.models.blocks.Http;
 import io.githuhb.dumijdev.njinx.core.models.blocks.Location;
 import io.githuhb.dumijdev.njinx.core.models.blocks.NjinxConfig;
 import io.githuhb.dumijdev.njinx.core.models.blocks.Server;
 import io.githuhb.dumijdev.njinx.core.models.params.SimpleParam;
 import io.githuhb.dumijdev.njinx.core.parser.NjinxConfigParser;
+import io.githuhb.dumijdev.njinx.core.utils.DirectoryCleanup;
+import io.githuhb.dumijdev.njinx.core.utils.NginxDownloader;
+import org.apache.commons.compress.archivers.ArchiveException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -163,8 +168,13 @@ class NjinxConfigParserTests {
     }
 
     @Test
-    void shouldParseNginxDotConfFromFileToNjinxConfigObject() throws IOException {
-        var nginxConfLocation = "/nginx/conf/nginx.conf";
+    void shouldParseNginxDotConfFromFileToNjinxConfigObject() throws IOException, DownloadFailedException, ArchiveException {
+        var file = new File("/etc/apps/nginx");
+        DirectoryCleanup.cleanup(file.getAbsolutePath());
+        NginxDownloader.download(NginxVersions.NGINX_1_28_0, file);
+
+
+        var nginxConfLocation = file.getAbsoluteFile() + "/nginx-" + NginxVersions.NGINX_1_28_0 + "/conf/nginx.conf";
 
         var njinxConfig = parser.read(new File(nginxConfLocation));
 
@@ -173,7 +183,9 @@ class NjinxConfigParserTests {
 
         Assertions.assertNotNull(njinxConfig);
         Assertions.assertEquals(2, size(njinxConfig.blocks()));
-        Assertions.assertEquals(3, size(njinxConfig.params()));
+        Assertions.assertEquals(1, size(njinxConfig.params()));
+
+        DirectoryCleanup.cleanup(file.getAbsolutePath());
     }
 
     @Test
